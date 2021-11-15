@@ -26,7 +26,7 @@ export default function App() {
   const [selectedItemIndex, setSelectedItem] = useState();
 
   useEffect(() => {
-    axios.get(`${BACKEND_URL}/items`).then((result) => {
+    axios.get(`${REACT_APP_BACKEND_URL}/items`).then((result) => {
       console.log(result);
       setItems(result.data.items);
     });
@@ -83,23 +83,15 @@ export default function App() {
               <Cart items={cart} emptyCart={emptyCart} />
             </Route>
             <Route path="/">
-              <Items items={items} setItemDetail={setItemDetail} selectedItemIndex={selectedItemIndex} />
+              <Items
+                items={items}
+                setItemDetail={setItemDetail}
+                selectedItemIndex={selectedItemIndex}
+              />
             </Route>
           </Switch>
         </div>
       </div>
     </Router>
   );
-}
-
-function Home() {
-  return <h2>Home</h2>;
-}
-
-function About() {
-  return <h2>About</h2>;
-}
-
-function Users() {
-  return <h2>Users</h2>;
 }
