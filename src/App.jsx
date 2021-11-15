@@ -1,6 +1,14 @@
 import './App.css';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  NavLink,
+} from 'react-router-dom';
+
 import axios from 'axios';
 
 import Cart from './components/Cart.jsx';
@@ -17,6 +25,17 @@ export default function App() {
   const [cart, setCart] = useState([]);
   const [selectedItemIndex, setSelectedItem] = useState();
 
+  useEffect(() => {
+    axios.get(`${BACKEND_URL}/items`).then((result) => {
+      console.log(result);
+      setItems(result.data.items);
+    });
+  }, []);
+
+  const onDeepLink = (itemIndex) => {
+    setSelectedItem(itemIndex);
+  };
+
   const addToCart = (item, quantity) => {
     const cartItem = { quantity, ...item };
     setCart([cartItem, ...cart]);
@@ -30,28 +49,57 @@ export default function App() {
     setSelectedItem(itemIndex);
   };
 
-  const getItems = () => {
-    axios.get(`${REACT_APP_BACKEND_URL}/items`).then((result) => {
-      console.log(result);
-      setItems(result.data.items);
-    });
-  };
-
   const selectedItem = items[selectedItemIndex];
 
   return (
-    <div className="container">
-      <div className="row">
+    <Router>
+      <nav>
+        <ul>
+          <li>
+            <NavLink exact to="/" activeClassName="rr-selected-link">
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <NavLink exact to="/cart" activeClassName="rr-selected-link">
+              Cart(
+              {cart.length}
+              )
+            </NavLink>
+          </li>
+        </ul>
+      </nav>
+      <div className="container">
         <h1 className="page-title">Wow Shopping!</h1>
-        <Items items={items} setItemDetail={setItemDetail} />
-        {items.length === 0 && (
-          <button type="button" onClick={getItems}>
-            Get Items
-          </button>
-        )}
-        <ItemDetail item={selectedItem} addToCart={addToCart} />
-        <Cart items={cart} emptyCart={emptyCart} />
+        <div className="row">
+          {/* A <Switch> looks through its children <Route>s and
+            renders the first one that matches the current URL. */}
+          <Switch>
+            {/* give the route matching path in order of matching precedence */}
+            <Route path="/items/:id">
+              <ItemDetail item={selectedItem} addToCart={addToCart} onDeepLink={onDeepLink} />
+            </Route>
+            <Route path="/cart">
+              <Cart items={cart} emptyCart={emptyCart} />
+            </Route>
+            <Route path="/">
+              <Items items={items} setItemDetail={setItemDetail} selectedItemIndex={selectedItemIndex} />
+            </Route>
+          </Switch>
+        </div>
       </div>
-    </div>
+    </Router>
   );
+}
+
+function Home() {
+  return <h2>Home</h2>;
+}
+
+function About() {
+  return <h2>About</h2>;
+}
+
+function Users() {
+  return <h2>Users</h2>;
 }
