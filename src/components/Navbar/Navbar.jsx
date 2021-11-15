@@ -1,29 +1,30 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Offcanvas, CloseButton } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faCog } from '@fortawesome/free-solid-svg-icons';
 
 function NavbarButtons({ isLoggedIn, isAuthPage, handleLogoutSubmit }) {
-  if (!isAuthPage) {
-    if (isLoggedIn) {
-      return (
-        <form
-          className="d-inline-block"
-        >
-          <button
-            className="btn text-white bg-red-400 hover:bg-red-300"
-            type="submit"
-            onClick={handleLogoutSubmit}
-          >
-            Log Out
-          </button>
-        </form>
-      );
-    }
-
+  if (isLoggedIn && !isAuthPage) {
     return (
-      <a className="btn text-white bg-green-400 hover:bg-green-300" href="/login" role="button">Log In</a>
+      <form
+        className="d-inline-block"
+      >
+        <button
+          className="btn btn-danger"
+          type="submit"
+          onClick={handleLogoutSubmit}
+        >
+          Log Out
+        </button>
+      </form>
+    );
+  }
+
+  if (!isAuthPage) {
+    return (
+      <Link className="btn btn-success" to="/login" role="button">Log In</Link>
     );
   }
 

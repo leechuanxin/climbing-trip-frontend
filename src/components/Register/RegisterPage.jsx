@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 // Custom imports
 import REACT_APP_BACKEND_URL from '../../modules/urls.mjs';
 import * as errors from '../../modules/errors.mjs';
@@ -118,9 +118,9 @@ export default function RegisterPage({ isLoggedIn }) {
       <div className="row w-100 pt-3">
         <div className="col-12 pt-1">
           <p className="mb-0">
-            <a href="/">
+            <Link to="/">
               <small>« Back to Home</small>
-            </a>
+            </Link>
           </p>
           <hr />
         </div>
@@ -134,7 +134,7 @@ export default function RegisterPage({ isLoggedIn }) {
                 <p className="mb-3 text-blue-50">
                   Already have an account? Log in
                   {' '}
-                  <a href="/login">here</a>
+                  <Link to="/login">here</Link>
                   .
                 </p>
               </div>

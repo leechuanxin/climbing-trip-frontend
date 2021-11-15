@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types, jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
-import { useLocation, Redirect } from 'react-router-dom';
+import { useLocation, Redirect, Link } from 'react-router-dom';
 import axios from 'axios';
 // Custom imports
 import REACT_APP_BACKEND_URL from '../../modules/urls.mjs';
@@ -26,7 +26,7 @@ function GlobalLoginErrorAlert({ errorMessage }) {
 }
 
 export default function LoginPage({
-  sessionExpired, isLoggedIn, setIsLoggedIn, setPrevUsername, setPrevRealName, setPrevUserId,
+  sessionExpired, isLoggedIn, handleSetIsLoggedIn, setPrevUsername, setPrevRealName, setPrevUserId,
 }) {
   const query = useQuery();
   const [globalErrorMessage, setGlobalErrorMessage] = useState(
@@ -88,7 +88,7 @@ export default function LoginPage({
           setPrevUsername(response.data.username);
           setPrevRealName(response.data.realName);
           setPrevUserId(response.data.id);
-          setIsLoggedIn(true);
+          handleSetIsLoggedIn();
         }
       })
       .catch(() => {
@@ -107,9 +107,9 @@ export default function LoginPage({
       <div className="row w-100 pt-3">
         <div className="col-12 pt-1">
           <p className="mb-0">
-            <a href="/">
+            <Link to="/">
               <small>« Back to Home</small>
-            </a>
+            </Link>
           </p>
           <hr />
         </div>
@@ -123,7 +123,7 @@ export default function LoginPage({
                 <p className="mb-3">
                   Do not have an account yet? Register
                   {' '}
-                  <a href="/signup">here</a>
+                  <Link to="/signup">here</Link>
                   .
                 </p>
               </div>

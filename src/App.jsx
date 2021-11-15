@@ -9,6 +9,7 @@ import axios from 'axios';
 
 // CUSTOM IMPORTS
 import { hasLoginCookie, getCookie } from './modules/cookie.mjs';
+import REACT_APP_BACKEND_URL from './modules/urls.mjs';
 import './App.css';
 // component partials
 import Navbar from './components/Navbar/Navbar.jsx';
@@ -20,7 +21,7 @@ import Register from './components/Register/RegisterPage.jsx';
 axios.defaults.withCredentials = true;
 
 function NavbarWrapper({
-  isAuthPage,
+  navbarForAuth,
   setIsAuthPage,
   handleSetNavbar,
   children,
@@ -28,12 +29,12 @@ function NavbarWrapper({
   useEffect(() => {
     handleSetNavbar();
 
-    if (isAuthPage) {
+    if (navbarForAuth) {
       setIsAuthPage(true);
     } else {
       setIsAuthPage(false);
     }
-  }, []);
+  }, [navbarForAuth]);
 
   return <>{children}</>;
 }
@@ -53,7 +54,7 @@ export default function App() {
     event.preventDefault();
 
     axios
-      .delete('/logout')
+      .delete(`${REACT_APP_BACKEND_URL}/logout`)
       .then((response) => {
         if (response.data.error) {
           console.log('logout error:', response.data.error);
@@ -75,6 +76,10 @@ export default function App() {
     setHasNavbar(true);
   };
 
+  const handleSetIsLoggedIn = () => {
+    setIsLoggedIn(true);
+  };
+
   return (
     <Router>
       <Navbar
@@ -94,7 +99,7 @@ export default function App() {
           path="/signup"
           render={() => (
             <NavbarWrapper
-              isAuthPage
+              navbarForAuth
               setIsAuthPage={setIsAuthPage}
               handleSetNavbar={handleSetNavbar}
             >
@@ -106,13 +111,13 @@ export default function App() {
           path="/login"
           render={() => (
             <NavbarWrapper
-              isAuthPage
+              navbarForAuth
               setIsAuthPage={setIsAuthPage}
               handleSetNavbar={handleSetNavbar}
             >
               <Login
                 isLoggedIn={isLoggedIn}
-                setIsLoggedIn={setIsLoggedIn}
+                handleSetIsLoggedIn={handleSetIsLoggedIn}
                 setPrevUsername={setUsername}
                 setPrevRealName={setRealName}
                 setPrevUserId={setUserId}
@@ -120,9 +125,19 @@ export default function App() {
             </NavbarWrapper>
           )}
         />
-        <Route exact path="/">
-          <div>Hello climbing trip!</div>
-        </Route>
+        <Route
+          exact
+          path="/"
+          render={() => (
+            <NavbarWrapper
+              navbarForAuth={false}
+              setIsAuthPage={setIsAuthPage}
+              handleSetNavbar={handleSetNavbar}
+            >
+              <div>Hello climbing trip!</div>
+            </NavbarWrapper>
+          )}
+        />
       </Switch>
     </Router>
   );
