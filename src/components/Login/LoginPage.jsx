@@ -105,14 +105,6 @@ export default function LoginPage({
   return (
     <div className="container-fluid pt-5">
       <div className="row w-100 pt-3">
-        <div className="col-12 pt-1">
-          <p className="mb-0">
-            <Link to="/">
-              <small>« Back to Home</small>
-            </Link>
-          </p>
-          <hr />
-        </div>
         <div className="col-12 py-3">
           <form>
             <div className="row">

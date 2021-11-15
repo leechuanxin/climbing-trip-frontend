@@ -14,6 +14,7 @@ import './App.css';
 // component partials
 import Navbar from './components/Navbar/Navbar.jsx';
 // auth pages
+import Index from './components/Index/IndexPage.jsx';
 import Login from './components/Login/LoginPage.jsx';
 import Register from './components/Register/RegisterPage.jsx';
 
@@ -134,7 +135,9 @@ export default function App() {
               setIsAuthPage={setIsAuthPage}
               handleSetNavbar={handleSetNavbar}
             >
-              <div>Hello climbing trip!</div>
+              <Index
+                isLoggedIn={isLoggedIn}
+              />
             </NavbarWrapper>
           )}
         />
