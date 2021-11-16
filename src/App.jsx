@@ -42,6 +42,25 @@ function NavbarWrapper({
   return <>{children}</>;
 }
 
+function NoNavbarWrapper({
+  navbarForAuth,
+  setIsAuthPage,
+  handleSetNoNavbar,
+  children,
+}) {
+  useEffect(() => {
+    handleSetNoNavbar();
+
+    if (navbarForAuth) {
+      setIsAuthPage(true);
+    } else {
+      setIsAuthPage(false);
+    }
+  }, [navbarForAuth]);
+
+  return <>{children}</>;
+}
+
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(hasLoginCookie());
   const [hasNavbar, setHasNavbar] = useState(true);
@@ -79,6 +98,10 @@ export default function App() {
     setHasNavbar(true);
   };
 
+  const handleSetNoNavbar = () => {
+    setHasNavbar(false);
+  };
+
   const handleSetIsLoggedIn = () => {
     setIsLoggedIn(true);
   };
@@ -101,22 +124,22 @@ export default function App() {
         <Route
           path="/signup"
           render={() => (
-            <NavbarWrapper
+            <NoNavbarWrapper
               navbarForAuth
               setIsAuthPage={setIsAuthPage}
-              handleSetNavbar={handleSetNavbar}
+              handleSetNoNavbar={handleSetNoNavbar}
             >
               <Register isLoggedIn={isLoggedIn} />
-            </NavbarWrapper>
+            </NoNavbarWrapper>
           )}
         />
         <Route
           path="/login"
           render={() => (
-            <NavbarWrapper
+            <NoNavbarWrapper
               navbarForAuth
               setIsAuthPage={setIsAuthPage}
-              handleSetNavbar={handleSetNavbar}
+              handleSetNoNavbar={handleSetNoNavbar}
             >
               <Login
                 isLoggedIn={isLoggedIn}
@@ -125,7 +148,7 @@ export default function App() {
                 setPrevRealName={setRealName}
                 setPrevUserId={setUserId}
               />
-            </NavbarWrapper>
+            </NoNavbarWrapper>
           )}
         />
         <Route
