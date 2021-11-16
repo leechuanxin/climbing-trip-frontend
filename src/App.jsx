@@ -17,6 +17,8 @@ import Navbar from './components/Navbar/Navbar.jsx';
 import Index from './components/Index/IndexPage.jsx';
 import Login from './components/Login/LoginPage.jsx';
 import Register from './components/Register/RegisterPage.jsx';
+// other pages
+import CreateTrip from './components/Trip/CreateTripPage.jsx';
 
 // make sure that axios always sends the cookies to the backend server
 axios.defaults.withCredentials = true;
@@ -122,6 +124,21 @@ export default function App() {
                 setPrevUsername={setUsername}
                 setPrevRealName={setRealName}
                 setPrevUserId={setUserId}
+              />
+            </NavbarWrapper>
+          )}
+        />
+        <Route
+          exact
+          path="/createtrip"
+          render={() => (
+            <NavbarWrapper
+              navbarForAuth={false}
+              setIsAuthPage={setIsAuthPage}
+              handleSetNavbar={handleSetNavbar}
+            >
+              <CreateTrip
+                isLoggedIn={isLoggedIn}
               />
             </NavbarWrapper>
           )}
